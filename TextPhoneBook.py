@@ -94,7 +94,17 @@ def main():
         
         connection.commit()
         print('Operation successful.')
-           
+    
+    def help():
+        print('''
+    ===  HELP  ===
+Add - adds new contact
+Show - shows stored contacts
+Edit - allows edition of a contact
+Delete - allow deletion of a contact
+Exit - leaves the programm
+Help - shows help''') 
+
     try:
         connection = sqlite3.connect('textphonebook.db')
         cursor = connection.cursor()
@@ -118,32 +128,44 @@ def main():
 ==================================================================================================
 BY defoxicator
         ''')
-        while usr_input.lower() != 'exit':
+
+        commands = {
+            'add': add_contact,
+            'show': show_contacts,
+            'edit': edit_contact,
+            'delete': delete_contact,
+            'help': help,
+            }
+
+        while usr_input != 'exit':
             print("\nType 'help' and press ENTER to see availible options.")
-            usr_input = input("> ")
-        
-            if usr_input.lower() == 'add':
-                add_contact()
+            usr_input = input("> ").lower()
 
-            if usr_input.lower() == 'show':
-                show_contacts()
-            
-            if usr_input.lower() == 'edit':
-                edit_contact()
-            
-            if usr_input.lower() == 'delete':
-                delete_contact()
+#             if usr_input.lower() == 'add':
+#                 add_contact()
 
-            if usr_input.lower() == 'help':
-                print('''
-    ===  HELP  ===
-Add - adds new contact
-Show - shows stored contacts
-Edit - allows edition of a contact
-Delete - allow deletion of a contact
-Exit - leaves the programm
-Help - shows help''')
+#             if usr_input.lower() == 'show':
+#                 show_contacts()
+            
+#             if usr_input.lower() == 'edit':
+#                 edit_contact()
+            
+#             if usr_input.lower() == 'delete':
+#                 delete_contact()
+
+#             if usr_input.lower() == 'help':
+#                 print('''
+#     ===  HELP  ===
+# Add - adds new contact
+# Show - shows stored contacts
+# Edit - allows edition of a contact
+# Delete - allow deletion of a contact
+# Exit - leaves the programm
+# Help - shows help''')
     
+            if usr_input in commands:
+                commands[usr_input.lower()]()
+
     except sqlite3.error as e:
         print('\nOperation on database failed.', e)
 
